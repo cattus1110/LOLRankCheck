@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { riotkey } = require('../../config.json');
 
 module.exports = {
+	cooldown: 60,
 	data: new SlashCommandBuilder()
 		.setName('rank')
 		.setDescription('提供LOL牌位的資訊。')
@@ -34,10 +35,32 @@ module.exports = {
 			});
 
 			if (!response.ok) {
-				if (response.status == 404) {
+				switch (response.status) {
+				case 404:
 					return await interaction.reply(`查無此人 ${gamenameStr}#${taglineStr}`);
+				case 400:
+					throw new Error('錯誤的請求');
+				case 401:
+					throw new Error('未經授權');
+				case 403:
+					return await interaction.reply(`${gamenameStr}#${taglineStr} 為無效查詢`);
+				case 405:
+					throw new Error('不允許的方法');
+				case 415:
+					throw new Error('不支援的媒體類型');
+				case 429:
+					throw new Error('超過速率限制');
+				case 500:
+					throw new Error('內部伺服器錯誤');
+				case 502:
+					throw new Error('壞的網關');
+				case 503:
+					throw new Error('服務不可用');
+				case 504:
+					throw new Error('網關超時');
+				default:
+					throw new Error('無法獲取資料，HTTP 狀態碼： ' + response.status);
 				}
-				throw new Error('無法獲取資料，HTTP 狀態碼： ' + response.status);
 			}
 
 			const data1 = await response.json();
