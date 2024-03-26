@@ -2,5 +2,3 @@
 node .
 註冊指令
 node deploy-commands.js
-整理程式
-eslint . --fix
