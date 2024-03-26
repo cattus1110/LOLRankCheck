@@ -9,3 +9,4 @@
 
 3. **圖片分享**：機器人可以在 Discord 中分享玩家的排名圖標、段位圖標等相關圖片，使用戶能夠展示自己的遊戲成就。
 
+https://github.com/cattus1110/LOLRankCheck/blob/main/0.gif
